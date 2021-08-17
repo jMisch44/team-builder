@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import './App.css';
 import TeamMemberForm from './components/Form';
 import TeamMember from './components/TeamMember';
-import initialTeamMemberList from './components/TeamMemberList';
 
 const initialFormValues = {
   name: '',
@@ -12,8 +11,9 @@ const initialFormValues = {
 
 
 function App() {
-  const [teamMembers, setTeamMembers] = useState(initialTeamMemberList);
+  const [teamMembers, setTeamMembers] = useState([]);
   const [formValues, setFormValues] = useState(initialFormValues);
+  const [memberToEdit, setMemberToEdit] = useState();
 
   const updateForm = (inputName, inputValue) => {
     setFormValues({...formValues, [inputName]: inputValue});
@@ -21,15 +21,19 @@ function App() {
 
   const submitForm = () => {
     const newTeamMember = {
-      name: formValues.name,
-      email: formValues.email,
+      name: formValues.name.trim(),
+      email: formValues.email.trim(),
       role: formValues.role
     };
     if (!newTeamMember.name || !newTeamMember.email || !newTeamMember.role){
       return;
     }
-    setTeamMembers(teamMembers.concat(newTeamMember));
+    setTeamMembers(...teamMembers, teamMembers.concat(newTeamMember));
     setFormValues({name: "", email: "", role: ""});
+  }
+
+  const editMember = (event) => {
+    console.log(event);
   }
 
   return (
@@ -44,7 +48,11 @@ function App() {
     {
       teamMembers.map( (member, idx) => {
         return (
-          <TeamMember key={idx} details={member} />
+            <TeamMember 
+            key={idx} 
+            details={member}
+            edit={editMember} 
+            />
         )
       })
     }

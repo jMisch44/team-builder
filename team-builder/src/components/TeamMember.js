@@ -1,7 +1,7 @@
 import React from 'react';
 
 export default function TeamMember(props) {
-    const { details } = props;
+    const { details, edit } = props;
 
     if (!details) {
         return <h3>Getting your team members list</h3>
@@ -12,6 +12,7 @@ export default function TeamMember(props) {
             <h1>{details.name}</h1>
             <p>{details.email}</p>
             <p>{details.role}</p>
+            <button onClick={edit}>edit</button>
         </div>
     )
 
